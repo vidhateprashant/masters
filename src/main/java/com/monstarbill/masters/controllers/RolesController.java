@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Prashant
  * 14-07-2022
  */
-@CrossOrigin(origins= "*", allowedHeaders = "*", maxAge = 4800, allowCredentials = "false" )
+//@CrossOrigin(origins= "*", allowedHeaders = "*", maxAge = 4800, allowCredentials = "false" )
 @RestController
 @RequestMapping("/roles")
 @Slf4j
