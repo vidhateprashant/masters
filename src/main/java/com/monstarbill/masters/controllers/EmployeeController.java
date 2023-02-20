@@ -32,7 +32,7 @@ import com.monstarbill.masters.service.EmployeeService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@CrossOrigin(origins= "*", allowedHeaders = "*", maxAge = 4800, allowCredentials = "false" )
+@CrossOrigin //(origins= "*", allowedHeaders = "*", maxAge = 4800, allowCredentials = "false" )
 @RestController
 @RequestMapping("/employee")
 @Slf4j

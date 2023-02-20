@@ -33,14 +33,14 @@ public class MastersWsApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedMethods("*").allowedHeaders("*").maxAge(9999L)
-					.allowedOrigins("*");
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**").allowedMethods("*").allowedHeaders("*").maxAge(9999L)
+//					.allowedOrigins("*");
+//			}
+//		};
+//	}
 }
