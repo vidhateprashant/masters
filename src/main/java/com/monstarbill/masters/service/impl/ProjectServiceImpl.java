@@ -21,6 +21,7 @@ import com.monstarbill.masters.commons.CustomMessageException;
 import com.monstarbill.masters.commons.FilterNames;
 import com.monstarbill.masters.dao.ProjectDao;
 import com.monstarbill.masters.enums.Operation;
+import com.monstarbill.masters.feignclient.SetupServiceClient;
 import com.monstarbill.masters.models.Project;
 import com.monstarbill.masters.models.ProjectHistory;
 import com.monstarbill.masters.payload.request.PaginationRequest;
@@ -45,12 +46,15 @@ public class ProjectServiceImpl implements ProjectService{
 	@Autowired
 	private ProjectHistoryRepository projectHistoryRepository;
 	
+	@Autowired
+	private SetupServiceClient setupServiceClient;
+	
 	@Override
 	public Project save(Project project) {
 		Optional<Project> oldProject = Optional.ofNullable(null);
 		
 		if (project.getId() == null) {
-			project.setCreatedBy(CommonUtils.getLoggedInUsername());
+			project.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldProject = this.projectRepository.findByIdAndIsDeleted(project.getId(), false);
@@ -64,7 +68,7 @@ public class ProjectServiceImpl implements ProjectService{
 			}
 		}
 
-		project.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		project.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		try {
 			project = this.projectRepository.save(project);
 		} catch (DataIntegrityViolationException e) {

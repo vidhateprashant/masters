@@ -21,6 +21,7 @@ import com.monstarbill.masters.commons.CustomMessageException;
 import com.monstarbill.masters.commons.FilterNames;
 import com.monstarbill.masters.dao.ApprovalPreferenceDao;
 import com.monstarbill.masters.enums.Operation;
+import com.monstarbill.masters.feignclient.SetupServiceClient;
 import com.monstarbill.masters.models.ApprovalPreference;
 import com.monstarbill.masters.models.ApprovalPreferenceCondition;
 import com.monstarbill.masters.models.ApprovalPreferenceHistory;
@@ -58,7 +59,9 @@ public class ApprovalPreferenceServiceImpl implements ApprovalPreferenceService{
 	
 	@Autowired
 	private ApprovalPreferenceDao approvalPreferenceDao;
-
+	
+	@Autowired
+	private SetupServiceClient setupServiceClient;
 	
 	@Override
 	public List<ApprovalPreferenceHistory> findHistoryById(Long id, Pageable pageable) {
@@ -73,7 +76,7 @@ public class ApprovalPreferenceServiceImpl implements ApprovalPreferenceService{
 	 */
 	@Override
 	public ApprovalPreference save(ApprovalPreference approvalPreference) {
-		String username = CommonUtils.getLoggedInUsername();
+		String username = setupServiceClient.getLoggedInUsername();
 		
 		Optional<ApprovalPreference> oldApprovalPreference = Optional.empty();
 
@@ -123,7 +126,7 @@ public class ApprovalPreferenceServiceImpl implements ApprovalPreferenceService{
 	 * @param approvalPreferenceCondition
 	 */
 	private void save(Long approvalPreferenceId, ApprovalPreferenceCondition approvalPreferenceCondition) {
-		String username = CommonUtils.getLoggedInUsername();
+		String username = setupServiceClient.getLoggedInUsername();
 		
 		approvalPreferenceCondition.setApprovalPreferenceId(approvalPreferenceId);
 
@@ -175,7 +178,7 @@ public class ApprovalPreferenceServiceImpl implements ApprovalPreferenceService{
 	 * @param approvalPreferenceSequence
 	 */
 	private void save(Long approvalPreferenceId, Long approvalPreferenceConditionId, ApprovalPreferenceSequence approvalPreferenceSequence, Long roleId) {
-		String username = CommonUtils.getLoggedInUsername();
+		String username = setupServiceClient.getLoggedInUsername();
 		approvalPreferenceSequence.setApprovalPreferenceId(approvalPreferenceId);
 		approvalPreferenceSequence.setConditionId(approvalPreferenceConditionId);
 		

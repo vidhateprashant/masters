@@ -63,6 +63,17 @@ public interface SetupServiceClient {
 		logger.error("Exception : " + exception.getLocalizedMessage());
 		return null;
 	}
+	
+	@GetMapping("/subsidiary/get-logged-username")
+	@Retry(name = "setup-ws")
+	@CircuitBreaker(name = "setup-ws", fallbackMethod = "getLoggedInUsernameFallback")
+	public String getLoggedInUsername();
+	
+	default String getLoggedInUsernameFallback(Throwable exception) {
+		logger.error("Logged username not found exception.");
+		logger.error("Exception : " + exception.getLocalizedMessage());
+		return null;
+	}
 
 	/**
 	 * Find preference number by subsidiary & Master name

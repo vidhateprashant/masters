@@ -98,7 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String employeeNumber = null;
 		
 		Optional<Employee> oldEmployee = Optional.empty();
-		String username = CommonUtils.getLoggedInUsername();
+		String username = setupServiceClient.getLoggedInUsername();
 
 		try {
 			// 1. save the employee
@@ -204,7 +204,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<EmployeeAccounting> oldEmployeeAccounting = Optional.empty();
 
 		if (employeeAccounting.getId() == null) {
-			employeeAccounting.setCreatedBy(CommonUtils.getLoggedInUsername());
+			employeeAccounting.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldEmployeeAccounting = this.employeeAccountingRepository.findByIdAndIsDeleted(employeeAccounting.getId(),
@@ -221,7 +221,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		employeeAccounting.setEmployeeId(employeeId);
 		employeeAccounting.setEmployeeNumber(employeeNumber);
-		employeeAccounting.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		employeeAccounting.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		EmployeeAccounting employeeAccountingSaved = employeeAccountingRepository.save(employeeAccounting);
 		log.info("Employee Accounting is saved.");
 		this.updateEmployeeAccountingHistory(oldEmployeeAccounting, employeeAccountingSaved);
@@ -265,7 +265,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		boolean isNewRecord = true;
 		
 		if (employeeAccess.getId() == null) {
-			employeeAccess.setCreatedBy(CommonUtils.getLoggedInUsername());
+			employeeAccess.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			isNewRecord = false;
 			// Get the existing object using the deep copy
@@ -282,7 +282,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		employeeAccess.setEmployeeId(employeeId);
 		employeeAccess.setEmployeeNumber(employeeNumber);
-		employeeAccess.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		employeeAccess.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		
 		if (employeeAccess.isAccess()) {
 			if (StringUtils.isEmpty(employeeAccess.getAccessMail())) {
@@ -345,7 +345,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				oldEmployeeRole = Optional.empty();
 
 				if (employeeRole.getId() == null) {
-					employeeRole.setCreatedBy(CommonUtils.getLoggedInUsername());
+					employeeRole.setCreatedBy(setupServiceClient.getLoggedInUsername());
 				} else {
 					// Get the existing object using the deep copy
 					oldEmployeeRole = this.employeeRoleRepository.findByIdAndIsDeleted(employeeRole.getId(), false);
@@ -360,7 +360,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				}
 				employeeRole.setEmployeeId(employeeId);
 				employeeRole.setEmployeeNumber(employeeNumber);
-				employeeRole.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+				employeeRole.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 				EmployeeRole employeeRoleSaved = this.employeeRoleRepository.save(employeeRole);
 				log.info("Employee Role is saved.");
 				this.updateEmployeeRoleHistory(oldEmployeeRole, employeeRoleSaved);
@@ -442,7 +442,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<EmployeeContact> oldEmployeeContact = Optional.empty();
 
 		if (employeeContact.getId() == null) {
-			employeeContact.setCreatedBy(CommonUtils.getLoggedInUsername());
+			employeeContact.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldEmployeeContact = this.employeeContactRepository.findByIdAndIsDeleted(employeeContact.getId(), false);
@@ -458,7 +458,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		employeeContact.setEmployeeId(employeeId);
 		employeeContact.setEmployeeNumber(employeeNumber);
-		employeeContact.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		employeeContact.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		EmployeeContact employeeContactSaved = employeeContactRepository.save(employeeContact);
 		log.info("Emplyoee contact saved.");
 		this.updateEmployeeContactHistory(oldEmployeeContact, employeeContactSaved);
@@ -594,7 +594,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<EmployeeAddress> oldEmployeeAddress = Optional.empty();
 
 		if (employeeAddress.getId() == null) {
-			employeeAddress.setCreatedBy(CommonUtils.getLoggedInUsername());
+			employeeAddress.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get existing address using deep copy
 			oldEmployeeAddress = this.employeeAddressRepository.findByIdAndIsDeleted(employeeAddress.getId(), false);
@@ -609,7 +609,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		employeeAddress.setEmployeeId(employeeId);
 		employeeAddress.setEmployeeNumber(employeeNumber);
-		employeeAddress.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		employeeAddress.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		employeeAddress = this.employeeAddressRepository.save(employeeAddress);
 
 		if (employeeAddress == null) {

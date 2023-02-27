@@ -75,7 +75,7 @@ public class ItemServiceImpl implements ItemService {
 		Optional<Item> oldItem = Optional.empty();
 
 		if (item.getId() == null) {
-			item.setCreatedBy(CommonUtils.getLoggedInUsername());
+			item.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldItem = this.itemRepository.findByIdAndIsDeleted(item.getId(), false);
@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemService {
 			}
 		}
 
-		item.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		item.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		if (item.isActive() == true) {
 			item.setActiveDate(null);
 		}

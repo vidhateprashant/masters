@@ -21,7 +21,7 @@ public interface RolesService {
 
 	public List<CustomRoles> getRoleByIds(List<Long> roleIds);
 
-	public List<CustomRoles> findRolesBySubsidiaryId(Long subsidiaryId, String accessType);
+	public List<CustomRoles> findRolesBySubsidiaryId(Long subsidiaryId, List<String> accessType);
 
 	public List<CustomRoles> findBySubsidiaryForEmplyoee(Long subsidiaryId);
 

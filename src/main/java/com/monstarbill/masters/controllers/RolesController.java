@@ -120,7 +120,7 @@ public class RolesController {
 	 * @return roles
 	 */
 	@GetMapping("/get-roles-by-subsidiary")
-	public ResponseEntity<List<CustomRoles>> findBySubsidiary(@RequestParam Long subsidiaryId, @RequestParam String accessType) {
+	public ResponseEntity<List<CustomRoles>> findBySubsidiary(@RequestParam Long subsidiaryId, @RequestParam List<String> accessType) {
 		List<CustomRoles> customRoles = new ArrayList<CustomRoles>();
 		try {
 			customRoles = rolesService.findRolesBySubsidiaryId(subsidiaryId, accessType);

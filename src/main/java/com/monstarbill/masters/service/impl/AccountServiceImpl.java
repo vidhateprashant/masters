@@ -23,6 +23,7 @@ import com.monstarbill.masters.dao.AccountDao;
 import com.monstarbill.masters.enums.AccountTypes;
 import com.monstarbill.masters.enums.Operation;
 import com.monstarbill.masters.enums.Status;
+import com.monstarbill.masters.feignclient.SetupServiceClient;
 import com.monstarbill.masters.models.Account;
 import com.monstarbill.masters.models.AccountDepartment;
 import com.monstarbill.masters.models.AccountHistory;
@@ -62,9 +63,12 @@ public class AccountServiceImpl implements AccountService{
 	@Autowired
 	private AccountLocationRepository accountLocationRepository;
 	
+	@Autowired
+	private SetupServiceClient setupServiceClient;
+	
 	@Override
 	public Account save(Account account) {
-		String username = CommonUtils.getLoggedInUsername();
+		String username = setupServiceClient.getLoggedInUsername();
 		
 		Optional<Account> oldAccount = Optional.empty();
 

@@ -49,6 +49,9 @@ public class RolePermissions implements Cloneable {
 	@Column(name = "role_id")
 	private Long roleId;
 	
+	@Column(name = "module_name")
+	private String moduleName;
+	
 	@Column(name = "access_point")
 	private String accessPoint;
 	

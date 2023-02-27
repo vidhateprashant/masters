@@ -22,6 +22,7 @@ import com.monstarbill.masters.commons.CustomMessageException;
 import com.monstarbill.masters.commons.FilterNames;
 import com.monstarbill.masters.dao.BankDao;
 import com.monstarbill.masters.enums.Operation;
+import com.monstarbill.masters.feignclient.SetupServiceClient;
 import com.monstarbill.masters.models.Bank;
 import com.monstarbill.masters.models.BankHistory;
 import com.monstarbill.masters.models.BankPaymentInstrument;
@@ -51,12 +52,15 @@ public class BankServiceImpl implements BankService {
 	@Autowired
 	private BankDao bankDao;
 	
+	@Autowired
+	private SetupServiceClient setupServiceClient;
+	
 	@Override
 	public Bank save(Bank bank) {
 		Optional<Bank> oldBank = Optional.ofNullable(null);
 
 		if (bank.getId() == null) {
-			bank.setCreatedBy(CommonUtils.getLoggedInUsername());
+			bank.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldBank = this.bankRepository.findByIdAndIsDeleted(bank.getId(), false);
@@ -70,7 +74,7 @@ public class BankServiceImpl implements BankService {
 			}
 		}
 
-		bank.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		bank.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		if (bank.isActive() == true) {
 			bank.setActiveDate(null);
 		}
@@ -254,8 +258,8 @@ public class BankServiceImpl implements BankService {
 
 	@Override
 	public BankPaymentInstrument save(BankPaymentInstrument bankPaymentInstrument) {
-		bankPaymentInstrument.setCreatedBy(CommonUtils.getLoggedInUsername());
-		bankPaymentInstrument.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		bankPaymentInstrument.setCreatedBy(setupServiceClient.getLoggedInUsername());
+		bankPaymentInstrument.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		bankPaymentInstrument = this.bankPaymentInstrumentRepository.save(bankPaymentInstrument);
 		
 		if (bankPaymentInstrument == null) {

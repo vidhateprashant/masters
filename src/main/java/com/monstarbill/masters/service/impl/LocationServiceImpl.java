@@ -59,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
 	public Location save(Location location) {
 		Optional<Location> oldLocation = Optional.ofNullable(null);
 		if (location.getId() == null) {
-			location.setCreatedBy(CommonUtils.getLoggedInUsername());
+			location.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldLocation = this.locationRepository.findByIdAndIsDeleted(location.getId(), false);
@@ -72,7 +72,7 @@ public class LocationServiceImpl implements LocationService {
 				}
 			}
 		}
-		location.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		location.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		Location locationSaved;
 		try {
 			locationSaved = this.locationRepository.save(location);
@@ -175,7 +175,7 @@ public class LocationServiceImpl implements LocationService {
 		Optional<LocationAddress> oldLocationAddress = Optional.ofNullable(null);
 
 		if (locationAddress.getId() == null) {
-			locationAddress.setCreatedBy(CommonUtils.getLoggedInUsername());
+			locationAddress.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldLocationAddress = this.locationAddressRepository.findByIdAndIsDeleted(locationAddress.getId(), false);
@@ -188,7 +188,7 @@ public class LocationServiceImpl implements LocationService {
 				}
 			}
 		}
-		locationAddress.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		locationAddress.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		locationAddress = this.locationAddressRepository.save(locationAddress);
 
 		if (locationAddress == null) {

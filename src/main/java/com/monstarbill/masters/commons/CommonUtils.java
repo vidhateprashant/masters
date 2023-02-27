@@ -36,9 +36,9 @@ public class CommonUtils {
 	 * 
 	 * @return
 	 */
-	public static String getLoggedInUsername() {
-		return "";
-	}
+//	public static String getLoggedInUsername() {
+//		return "";
+//	}
 
 	/**
 	 * Prashant : 30-Jun-2022

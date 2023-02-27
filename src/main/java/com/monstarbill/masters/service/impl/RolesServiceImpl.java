@@ -22,6 +22,7 @@ import com.monstarbill.masters.commons.FilterNames;
 import com.monstarbill.masters.dao.CustomRolesDao;
 import com.monstarbill.masters.enums.Operation;
 import com.monstarbill.masters.enums.Status;
+import com.monstarbill.masters.feignclient.SetupServiceClient;
 import com.monstarbill.masters.models.CustomRoles;
 import com.monstarbill.masters.models.RolePermissions;
 import com.monstarbill.masters.models.RolesDepartment;
@@ -56,6 +57,9 @@ public class RolesServiceImpl implements RolesService {
 	@Autowired
 	private CustomRolesDao customRolesDao;
 	
+	@Autowired
+	private SetupServiceClient setupServiceClient;
+	
 	/**
 	 * Save -
 	 * 1. Role
@@ -66,7 +70,7 @@ public class RolesServiceImpl implements RolesService {
 	public CustomRoles save(CustomRoles role) {
 		log.info("Save Role started...");
 		
-		String username = CommonUtils.getLoggedInUsername();
+		String username = setupServiceClient.getLoggedInUsername();
 		
 		// 1. Save the Custom role
 		Optional<CustomRoles> customRole = Optional.empty();
@@ -355,7 +359,7 @@ public class RolesServiceImpl implements RolesService {
 	}
 
 	@Override
-	public List<CustomRoles> findRolesBySubsidiaryId(Long subsidiaryId, String accessType) {
+	public List<CustomRoles> findRolesBySubsidiaryId(Long subsidiaryId, List<String> accessType) {
 		List<CustomRoles> customRoles = new ArrayList<CustomRoles>();
 		customRoles = this.customRoleRepository.getAllRolesBySubsidiaryIdAndIsDeleted(subsidiaryId, false, accessType);
 		log.info("Get all roles  by subsidary id and type ." + customRoles);

@@ -17,8 +17,8 @@ public interface CustomRoleRepository extends JpaRepository<CustomRoles, String>
 
 	public Optional<CustomRoles> findByNameAndIsDeleted(String roleName, boolean isDeleted);
 
-	@Query("select new com.monstarbill.masters.models.CustomRoles(cr.id, cr.name, cr.selectedAccess, cr.isActive) from CustomRoles cr where cr.selectedAccess = :selectedAccess AND cr.subsidiaryId = :subsidiaryId and cr.isDeleted = :isDeleted ")
-	public List<CustomRoles> getAllRolesBySubsidiaryIdAndIsDeleted(@Param("subsidiaryId") Long subsidiaryId, @Param("isDeleted") boolean isDeleted, String selectedAccess);
+	@Query("select new com.monstarbill.masters.models.CustomRoles(cr.id, cr.name, cr.selectedAccess, cr.isActive) from CustomRoles cr where cr.selectedAccess IN :selectedAccess AND cr.subsidiaryId = :subsidiaryId and cr.isDeleted = :isDeleted ")
+	public List<CustomRoles> getAllRolesBySubsidiaryIdAndIsDeleted(@Param("subsidiaryId") Long subsidiaryId, @Param("isDeleted") boolean isDeleted, List<String> selectedAccess);
 	
 	@Query("select new com.monstarbill.masters.models.CustomRoles(cr.id, cr.name, cr.selectedAccess, cr.isActive) from CustomRoles cr where cr.subsidiaryId = :subsidiaryId and cr.isDeleted = :isDeleted ")
 	public List<CustomRoles> getAllRolesBySubsidiaryIdAndIsDeletedForEmployee(@Param("subsidiaryId") Long subsidiaryId, @Param("isDeleted") boolean isDeleted);

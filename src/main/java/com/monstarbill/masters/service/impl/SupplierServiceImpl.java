@@ -160,7 +160,7 @@ public class SupplierServiceImpl implements SupplierService {
 				}
 				supplier.setVendorNumber(preferenceNumber);
 				supplier.setApprovalStatus(TransactionStatus.OPEN.getTransactionStatus());
-				supplier.setCreatedBy(CommonUtils.getLoggedInUsername());
+				supplier.setCreatedBy(setupServiceClient.getLoggedInUsername());
 			} else {
 				// Get the existing object using the deep copy
 				oldSupplier = this.supplierRepository.findByIdAndIsDeleted(supplier.getId(), false);
@@ -174,7 +174,7 @@ public class SupplierServiceImpl implements SupplierService {
 				}
 			}
 
-			supplier.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+			supplier.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 			Supplier savedSupplier;
 			try {
 				savedSupplier = this.supplierRepository.save(supplier);
@@ -270,7 +270,7 @@ public class SupplierServiceImpl implements SupplierService {
 		Optional<SupplierAccounting> oldSupplierAccounting = Optional.empty();
 
 		if (supplierAccounting.getId() == null) {
-			supplierAccounting.setCreatedBy(CommonUtils.getLoggedInUsername());
+			supplierAccounting.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldSupplierAccounting = this.supplierAccountingRepository.findByIdAndIsDeleted(supplierAccounting.getId(),
@@ -286,7 +286,7 @@ public class SupplierServiceImpl implements SupplierService {
 			}
 		}
 		supplierAccounting.setSupplierId(supplierId);
-		supplierAccounting.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplierAccounting.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		SupplierAccounting supplierAccountingSaved = supplierAccountingRepository.save(supplierAccounting);
 
 		this.updateSupplierAccountingHistory(oldSupplierAccounting, supplierAccountingSaved);
@@ -329,7 +329,7 @@ public class SupplierServiceImpl implements SupplierService {
 		boolean isNewRecord = true;
 
 		if (supplierAccess.getId() == null) {
-			supplierAccess.setCreatedBy(CommonUtils.getLoggedInUsername());
+			supplierAccess.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			isNewRecord = false;
 			// Get the existing object using the deep copy
@@ -385,7 +385,7 @@ public class SupplierServiceImpl implements SupplierService {
 			}
 		}
 		supplierAccess.setSupplierId(supplierId);
-		supplierAccess.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplierAccess.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		SupplierAccess supplierAccessSaved = supplierAccessRepository.save(supplierAccess);
 
 		this.updateSupplierAccessHistory(oldSupplierAccess, supplierAccessSaved);
@@ -404,7 +404,7 @@ public class SupplierServiceImpl implements SupplierService {
 				oldSupplierRole = Optional.empty();
 
 				if (supplierRole.getId() == null) {
-					supplierRole.setCreatedBy(CommonUtils.getLoggedInUsername());
+					supplierRole.setCreatedBy(setupServiceClient.getLoggedInUsername());
 				} else {
 					// Get the existing object using the deep copy
 					oldSupplierRole = this.supplierRoleRepository.findByIdAndIsDeleted(supplierRole.getId(), false);
@@ -418,7 +418,7 @@ public class SupplierServiceImpl implements SupplierService {
 					}
 				}
 				supplierRole.setSupplierId(supplierId);
-				supplierRole.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+				supplierRole.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 				SupplierRole supplierRoleSaved = this.supplierRoleRepository.save(supplierRole);
 
 				updateSupplierRoleHistory(oldSupplierRole, supplierRoleSaved);
@@ -499,7 +499,7 @@ public class SupplierServiceImpl implements SupplierService {
 		Optional<SupplierSubsidiary> oldSupplierSubsidiary = Optional.empty();
 
 		if (supplierSubsidiary.getId() == null) {
-			supplierSubsidiary.setCreatedBy(CommonUtils.getLoggedInUsername());
+			supplierSubsidiary.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldSupplierSubsidiary = this.supplierSubsidiaryRepository.findByIdAndIsDeleted(supplierSubsidiary.getId(),
@@ -515,7 +515,7 @@ public class SupplierServiceImpl implements SupplierService {
 			}
 		}
 		supplierSubsidiary.setSupplierId(supplierId);
-		supplierSubsidiary.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplierSubsidiary.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		SupplierSubsidiary savedSupplierSubsidiary = this.supplierSubsidiaryRepository.save(supplierSubsidiary);
 
 		updateSupplierSubsidiaryHistory(oldSupplierSubsidiary, savedSupplierSubsidiary);
@@ -526,7 +526,7 @@ public class SupplierServiceImpl implements SupplierService {
 		Optional<SupplierContact> oldSupplierContact = Optional.empty();
 
 		if (supplierContact.getId() == null) {
-			supplierContact.setCreatedBy(CommonUtils.getLoggedInUsername());
+			supplierContact.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get the existing object using the deep copy
 			oldSupplierContact = this.supplierContactRepository.findByIdAndIsDeleted(supplierContact.getId(), false);
@@ -541,7 +541,7 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 
 		supplierContact.setSupplierId(supplierId);
-		supplierContact.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplierContact.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		SupplierContact supplierContactSaved = supplierContactRepository.save(supplierContact);
 
 		updateSupplierContactHistory(oldSupplierContact, supplierContactSaved);
@@ -730,9 +730,9 @@ public class SupplierServiceImpl implements SupplierService {
 		boolean isNew = false;
 		if (supplierSubsidiary.getId() == null) {
 			isNew = true;
-			supplierSubsidiary.setCreatedBy(CommonUtils.getLoggedInUsername());
+			supplierSubsidiary.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		}
-		supplierSubsidiary.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplierSubsidiary.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		supplierSubsidiary = this.supplierSubsidiaryRepository.save(supplierSubsidiary);
 
 		if (supplierSubsidiary == null) {
@@ -799,7 +799,7 @@ public class SupplierServiceImpl implements SupplierService {
 		Optional<SupplierAddress> oldSupplierAddress = Optional.empty();
 
 		if (supplierAddress.getId() == null) {
-			supplierAddress.setCreatedBy(CommonUtils.getLoggedInUsername());
+			supplierAddress.setCreatedBy(setupServiceClient.getLoggedInUsername());
 		} else {
 			// Get existing address using deep copy
 			oldSupplierAddress = this.supplierAddressRepository.findByIdAndIsDeleted(supplierAddress.getId(), false);
@@ -813,7 +813,7 @@ public class SupplierServiceImpl implements SupplierService {
 			}
 		}
 		supplierAddress.setSupplierId(supplierId);
-		supplierAddress.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplierAddress.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 
 		if ("Registered".equalsIgnoreCase(supplierAddress.getRegistrationType())
 				&& StringUtils.isEmpty(supplierAddress.getTaxRegistrationNumber())) {
@@ -1145,7 +1145,7 @@ public class SupplierServiceImpl implements SupplierService {
 	 * @param supplier
 	 */
 	private void saveSupplierForApproval(Supplier supplier, Optional<Supplier> oldSupplier) {
-		supplier.setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplier.setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		supplier = this.supplierRepository.save(supplier);
 
 		if (supplier == null) {
@@ -2033,7 +2033,7 @@ public class SupplierServiceImpl implements SupplierService {
 			throw new CustomMessageException("Supplier Not Found against given Supplier id : " + supplierId);
 		}
 		supplier.get().setNextApprover(String.valueOf(approverId));
-		supplier.get().setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplier.get().setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		this.supplierRepository.save(supplier.get());
 		
 		return true;
@@ -2048,7 +2048,7 @@ public class SupplierServiceImpl implements SupplierService {
 			throw new CustomMessageException("Supplier Not Found against given Supplier id : " + supplierId);
 		}
 		supplier.get().setApprovalStatus(TransactionStatus.APPROVED.getTransactionStatus());
-		supplier.get().setLastModifiedBy(CommonUtils.getLoggedInUsername());
+		supplier.get().setLastModifiedBy(setupServiceClient.getLoggedInUsername());
 		
 		if (this.supplierRepository.save(supplier.get()) != null) return true;
 		else throw new CustomException("Error in self approve. Please contact System Administrator");
