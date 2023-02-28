@@ -24,12 +24,14 @@ import com.monstarbill.masters.enums.Operation;
 import com.monstarbill.masters.enums.Status;
 import com.monstarbill.masters.feignclient.SetupServiceClient;
 import com.monstarbill.masters.models.CustomRoles;
+import com.monstarbill.masters.models.DefaultRolePermissions;
 import com.monstarbill.masters.models.RolePermissions;
 import com.monstarbill.masters.models.RolesDepartment;
 import com.monstarbill.masters.models.RolesHistory;
 import com.monstarbill.masters.payload.request.PaginationRequest;
 import com.monstarbill.masters.payload.response.PaginationResponse;
 import com.monstarbill.masters.repository.CustomRoleRepository;
+import com.monstarbill.masters.repository.DefaultRolePermissionRepository;
 import com.monstarbill.masters.repository.RoleHistoryRepository;
 import com.monstarbill.masters.repository.RolePermissionsRepository;
 import com.monstarbill.masters.repository.RolesDepartmentRepository;
@@ -59,6 +61,9 @@ public class RolesServiceImpl implements RolesService {
 	
 	@Autowired
 	private SetupServiceClient setupServiceClient;
+	
+	@Autowired
+	private DefaultRolePermissionRepository defaultRolePermissionRepository;
 	
 	/**
 	 * Save -
@@ -372,6 +377,25 @@ public class RolesServiceImpl implements RolesService {
 		customRoles = this.customRoleRepository.getAllRolesBySubsidiaryIdAndIsDeletedForEmployee(subsidiaryId, false);
 		log.info("Get all roles  by subsidary id and type ." + customRoles);
 		return customRoles;
+	}
+
+	@Override
+	public List<DefaultRolePermissions> findAccessPointBySelectedAccess(String selectedAccess) {
+		List<DefaultRolePermissions> accessPoints = new ArrayList<DefaultRolePermissions>();
+		
+		if (StringUtils.isEmpty(selectedAccess)) {
+			throw new CustomException("Selected Access should not be empty.");
+		}
+		
+		if ("ADMIN".equalsIgnoreCase(selectedAccess)) {
+			accessPoints = defaultRolePermissionRepository.findAllByIsAdminAccessAndIsDeleted(true, false);
+		} else if ("APPROVER".equalsIgnoreCase(selectedAccess)) {
+			accessPoints = defaultRolePermissionRepository.findAllByIsApproverAccessAndIsDeleted(true, false);
+		} else if ("SUPPLIER".equalsIgnoreCase(selectedAccess)) {
+			accessPoints = defaultRolePermissionRepository.findAllByIsSupplierAccessAndIsDeleted(true, false);
+		}
+		
+		return accessPoints;
 	}
 
 }

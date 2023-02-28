@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import com.monstarbill.masters.models.CustomRoles;
+import com.monstarbill.masters.models.DefaultRolePermissions;
 import com.monstarbill.masters.models.RolesHistory;
 import com.monstarbill.masters.payload.request.PaginationRequest;
 import com.monstarbill.masters.payload.response.PaginationResponse;
@@ -24,5 +25,7 @@ public interface RolesService {
 	public List<CustomRoles> findRolesBySubsidiaryId(Long subsidiaryId, List<String> accessType);
 
 	public List<CustomRoles> findBySubsidiaryForEmplyoee(Long subsidiaryId);
+
+	public List<DefaultRolePermissions> findAccessPointBySelectedAccess(String selectedAccess);
 
 }

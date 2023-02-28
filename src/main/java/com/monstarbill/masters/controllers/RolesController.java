@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.monstarbill.masters.commons.CustomException;
 import com.monstarbill.masters.models.CustomRoles;
+import com.monstarbill.masters.models.DefaultRolePermissions;
 import com.monstarbill.masters.models.RolesHistory;
 import com.monstarbill.masters.payload.request.PaginationRequest;
 import com.monstarbill.masters.payload.response.PaginationResponse;
@@ -143,5 +144,18 @@ public class RolesController {
 			throw new CustomException("Exception while getting the roles by subsidiaryId :: " + e.toString());
 		}
 		return ResponseEntity.ok(customRoles);
+	}
+	
+	@GetMapping("/get-access-point-by-selected-access")
+	public ResponseEntity<List<DefaultRolePermissions>> findAccessPointBySelectedAccess(@RequestParam String selectedAccess) {
+		List<DefaultRolePermissions> defaultAccessPoints = new ArrayList<DefaultRolePermissions>();
+		try {
+			defaultAccessPoints = rolesService.findAccessPointBySelectedAccess(selectedAccess);
+			log.info("Getting the defaultAccessPoints  " + defaultAccessPoints);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CustomException("Exception while getting the defaultAccessPoints by access :: " + e.toString());
+		}
+		return ResponseEntity.ok(defaultAccessPoints);
 	}
 }
