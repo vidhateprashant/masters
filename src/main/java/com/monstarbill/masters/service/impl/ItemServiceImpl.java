@@ -553,7 +553,8 @@ public class ItemServiceImpl implements ItemService {
 				// Expense Account
 				try {
 					if (inputCurrentRow.getCell(13) != null) {
-						String accountName = inputCurrentRow.getCell(13).getStringCellValue();
+//						String accountName = inputCurrentRow.getCell(13).getStringCellValue();
+						String accountName = new DataFormatter().formatCellValue(inputCurrentRow.getCell(13));
 						item.setExpenseAccountName(accountName);
 						
 						Long accountId = this.accountRepository.findIdByNameAndDeleted(accountName, false);

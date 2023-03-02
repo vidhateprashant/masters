@@ -269,7 +269,7 @@ public class RolesServiceImpl implements RolesService {
 
 	
 	public List<RolePermissions> getRolePermissionsByRoleId(Long roleId) {
-		return this.rolePermissionsRepository.findAllByRoleIdAndIsDeleted(roleId, false);
+		return this.rolePermissionsRepository.findAllByRoleIdAndIsDeletedOrderById(roleId, false);
 	}
 	
 	public List<RolesDepartment> getRolesDepartmentByRoleId(Long roleId) {

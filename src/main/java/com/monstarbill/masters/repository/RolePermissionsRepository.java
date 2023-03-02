@@ -13,6 +13,6 @@ public interface RolePermissionsRepository extends JpaRepository<RolePermissions
 
 	public Optional<RolePermissions> findByIdAndIsDeleted(Long id, boolean isDeleted);
 
-	public List<RolePermissions> findAllByRoleIdAndIsDeleted(Long roleId, boolean isDeleted);
+	public List<RolePermissions> findAllByRoleIdAndIsDeletedOrderById(Long roleId, boolean isDeleted);
 
 }
