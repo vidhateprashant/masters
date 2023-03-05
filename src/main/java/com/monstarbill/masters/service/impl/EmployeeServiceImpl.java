@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
@@ -103,7 +104,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		try {
 			// 1. save the employee
 			if (employee.getId() == null) {
-				employeeNumber = this.setupServiceClient.getPreferenceNumber(employee.getSubsidiaryId(), "Employee Master");
+				if (StringUtils.isNotEmpty(employee.getAccountId())) {
+					employeeNumber = String.valueOf(new DateTime());
+				} else {
+					employeeNumber = this.setupServiceClient.getPreferenceNumber(employee.getSubsidiaryId(), "Employee Master");
+				}
 				if (StringUtils.isEmpty(employeeNumber)) {
 					throw new CustomException("Employee number is not generated. Please check the configurations.");
 				}

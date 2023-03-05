@@ -26,7 +26,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	private EntityManager entityManager;
 	
 	public static final String GET_ALL_EMPLOYEES = " SELECT new com.monstarbill.masters.models.Employee(e.id, e.firstName, e.middleName, e.lastName, e.employeeNumber, ec.mobile, e.designation, e.isActive, e.fullName, ea.access) from Employee e "
-			+ " INNER JOIN EmployeeContact ec ON ec.employeeId = e.id "
+			+ " INNER JOIN EmployeeContact ec ON ec.employeeId = e.id or e.accountId IS NOT NULL "
 			+ " INNER JOIN EmployeeAccess ea ON ea.employeeId = e.id "
 			+ " WHERE 1=1 ";
 	

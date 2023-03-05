@@ -26,7 +26,7 @@ public class CustomRolesDaoImpl implements CustomRolesDao {
 	private EntityManager entityManager;
 	
 	public static final String GET_ROLES = "select new com.monstarbill.masters.models.CustomRoles(r.id, r.subsidiaryId,r.isActive, r.name, r.createdDate, r.createdBy, s.name) from CustomRoles r"
-			+ "	INNER JOIN Subsidiary s ON r.subsidiaryId = s.id WHERE 1=1 ";
+			+ "	INNER JOIN Subsidiary s ON r.subsidiaryId = s.id or r.accountId is not null WHERE 1=1 ";
 	
 	
 	public static final String GET_ROLES_COUNT = "select count(1) FROM CustomRoles r INNER JOIN Subsidiary s ON r.subsidiaryId = s.id WHERE 1=1  ";

@@ -52,6 +52,8 @@ public class Employee implements Cloneable {
 	@Column(name="subsidiary_id")
 	private Long subsidiaryId; 
 
+	private String accountId;
+
 	private String initials;
 	
 	@NotBlank(message = "Designation is mandatory")

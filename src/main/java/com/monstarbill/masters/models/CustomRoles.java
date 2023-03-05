@@ -38,7 +38,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(	name = "custom_roles")
+@Table(schema = "setup", name = "custom_roles")
 @ToString
 @Audited
 @AuditTable("custom_roles_aud")
@@ -54,6 +54,9 @@ public class CustomRoles implements Cloneable {
 	
 	@Column(name = "subsidiary_id")
 	private Long subsidiaryId;
+	
+	@Column(name = "account_id")
+	private String accountId;
 	
 	@Column(name = "selected_role")
 	private String selectedAccess;
