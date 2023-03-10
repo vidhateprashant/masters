@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -294,33 +295,45 @@ public class EmployeeServiceImpl implements EmployeeService {
 				log.error("Employee Access Mail should not be empty.");
 				throw new CustomMessageException("Employee Access Mail should not be empty.");
 			}
-			
-			String password = employeeAccess.getPassword();
-			if (StringUtils.isEmpty(password)) {
-				password = employeeAccessRepository.getPasswordById(employeeId);
-				if (StringUtils.isEmpty(password)) {
-					log.error("Password cannot be empty.");
-					throw new CustomMessageException("Password cannot be empty");
-				}
-				employeeAccess.setPlainPassword(password);
-			} else {
-				employeeAccess.setPlainPassword(password);
+			//	Modification Date : 10-03-23
+			//	Modification Done By : Monojit Mondal
+			//	Modification Reason : Sending the autocreatePassword to the user and set that password in database
+			String mailId = employeeAccess.getAccessMail();
+			String oldMailId = employeeAccessRepository.getAccessMailById(employeeAccess.getEmployeeId());
+			String autoCreatePassword = null;
+			if (!mailId.equals(oldMailId)) {
+				autoCreatePassword = UUID.randomUUID().toString().substring(0, 8).replace("-", "");
+				employeeAccess.setPlainPassword(autoCreatePassword);
+				employeeAccess.setPassword(passwordEncoder.encode(autoCreatePassword));
+				employeeAccessRepository.getPasswordById(employeeAccess.getEmployeeId());
+				employeeAccess.setPassword(passwordEncoder.encode(autoCreatePassword));
+				this.employeeAccessRepository.save(employeeAccess);
+				String body = "Hi,<br><br>This is the auto genrated password.<br> " + autoCreatePassword + " <br><b>Regards</b>,<br>Team Monstarbill<br>" ;
+				try {
+					Boolean ab = CommonUtils.sendMail(mailId, null, "Password", body);
+					log.info("This is value of ab "+ab);	
+				} catch (Exception e) {
+					e.printStackTrace();
+					log.error("Error while sending the mail.");
+					throw new CustomException("Error while sending the mail.");
+				}	
 			}
-			
-			employeeAccess.setPassword(passwordEncoder.encode(password));
-			
+			else
+			{
+				autoCreatePassword = employeeAccessRepository.getPasswordById(employeeAccess.getEmployeeId());
+			}
 			if (CollectionUtils.isNotEmpty(employeeAccess.getEmployeeRoles())) {
 				Set<Long> roles = employeeAccess.getEmployeeRoles().stream().filter(e->e.isDeleted() == false).map(e -> e.getRoleId()).collect(Collectors.toSet());
-				UserValidationRequest user = new UserValidationRequest(isNewRecord, employeeAccess.getAccessMail(), password, new ArrayList<Long>(roles));
+				UserValidationRequest user = new UserValidationRequest(isNewRecord, employeeAccess.getAccessMail(),autoCreatePassword, new ArrayList<Long>(roles));
 				this.setupServiceClient.saveUserCredentials(user);
 			}
 			log.info("user with roles is saved.");
 		} else {
 			//delete from user credentials
 			if (!StringUtils.isEmpty(employeeAccess.getAccessMail())) {
-				this.setupServiceClient.deleteUserCredentials(employeeAccess.getAccessMail());				
+				this.setupServiceClient.deleteUserCredentials(employeeAccess.getAccessMail());
 			}
-			
+
 			employeeAccess.setAccessMail(null);
 			employeeAccess.setPassword(null);
 			employeeAccess.setPlainPassword(null);
