@@ -12,4 +12,6 @@ public interface AccountDepartmentRepository extends JpaRepository<AccountDepart
 
 	public List<AccountDepartment> findAllByAccountIdAndIsDeleted(Long accountId, boolean isDeleted);
 
+	public List<AccountDepartment> findAllByAccountIdAndIsDeletedOrderByIdAsc(Long accountId, boolean isDeleted);
+
 }

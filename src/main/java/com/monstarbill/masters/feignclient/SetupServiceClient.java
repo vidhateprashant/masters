@@ -99,9 +99,9 @@ public interface SetupServiceClient {
 	@GetMapping("/user/save-user-credentials")
 	// @Retry(name = "setup-ws")
 	@CircuitBreaker(name = "setup-ws", fallbackMethod = "saveUserCredentialsFallback")
-	public void saveUserCredentials(UserValidationRequest user);
+	public UserValidationRequest saveUserCredentials(UserValidationRequest user);
 	
-	default void saveUserCredentialsFallback(UserValidationRequest user, Throwable exception) {
+	default UserValidationRequest saveUserCredentialsFallback(UserValidationRequest user, Throwable exception) {
 		logger.error("user : " + user.toString() + ", Save user credentials failed due to exception.");
 		logger.error("Exception : " + exception.getLocalizedMessage());
 		throw new CustomException("Error while saving the Credentials.");

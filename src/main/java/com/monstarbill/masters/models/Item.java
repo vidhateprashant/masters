@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -38,7 +39,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(	name = "item")
+@Table(	name = "item",uniqueConstraints = { @UniqueConstraint(columnNames = 
+{ "subsidiary_id", "name" }) })
 @ToString
 @Audited
 @AuditTable("item_aud")

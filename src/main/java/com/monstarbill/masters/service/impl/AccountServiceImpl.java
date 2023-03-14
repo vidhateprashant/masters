@@ -312,9 +312,9 @@ public class AccountServiceImpl implements AccountService{
 			log.info("Account is not found given id : " + id);
 			throw new CustomMessageException("Account is not found given id : " + id);
 		}
-		account.get().setAccountSubsidiaries(this.accountSubsidiaryRepository.findAllByAccountIdAndIsDeleted(id, false));
-		account.get().setAccountDepartments(this.accountDepartmentRepository.findAllByAccountIdAndIsDeleted(id, false));
-		account.get().setAccountLocations(this.accountLocationRepository.findAllByAccountIdAndIsDeleted(id, false));
+		account.get().setAccountSubsidiaries(this.accountSubsidiaryRepository.findAllByAccountIdAndIsDeletedOrderByIdAsc(id, false));
+		account.get().setAccountDepartments(this.accountDepartmentRepository.findAllByAccountIdAndIsDeletedOrderByIdAsc(id, false));
+		account.get().setAccountLocations(this.accountLocationRepository.findAllByAccountIdAndIsDeletedOrderByIdAsc(id, false));
 		return account.get();
 	}
 	

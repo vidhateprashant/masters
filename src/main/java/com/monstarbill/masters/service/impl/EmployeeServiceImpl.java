@@ -303,29 +303,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 			String autoCreatePassword = null;
 			if (!mailId.equals(oldMailId)) {
 				autoCreatePassword = UUID.randomUUID().toString().substring(0, 8).replace("-", "");
-				employeeAccess.setPlainPassword(autoCreatePassword);
-				employeeAccess.setPassword(passwordEncoder.encode(autoCreatePassword));
-				employeeAccessRepository.getPasswordById(employeeAccess.getEmployeeId());
-				employeeAccess.setPassword(passwordEncoder.encode(autoCreatePassword));
-				this.employeeAccessRepository.save(employeeAccess);
-				String body = "Hi,<br><br>This is the auto genrated password.<br> " + autoCreatePassword + " <br><b>Regards</b>,<br>Team Monstarbill<br>" ;
-				try {
-					Boolean ab = CommonUtils.sendMail(mailId, null, "Password", body);
-					log.info("This is value of ab "+ab);	
-				} catch (Exception e) {
-					e.printStackTrace();
-					log.error("Error while sending the mail.");
-					throw new CustomException("Error while sending the mail.");
-				}	
-			}
-			else
-			{
+			} else {
 				autoCreatePassword = employeeAccessRepository.getPasswordById(employeeAccess.getEmployeeId());
 			}
 			if (CollectionUtils.isNotEmpty(employeeAccess.getEmployeeRoles())) {
-				Set<Long> roles = employeeAccess.getEmployeeRoles().stream().filter(e->e.isDeleted() == false).map(e -> e.getRoleId()).collect(Collectors.toSet());
-				UserValidationRequest user = new UserValidationRequest(isNewRecord, employeeAccess.getAccessMail(),autoCreatePassword, new ArrayList<Long>(roles));
-				this.setupServiceClient.saveUserCredentials(user);
+				Set<Long> roles = employeeAccess.getEmployeeRoles().stream().filter(e -> e.isDeleted() == false)
+						.map(e -> e.getRoleId()).collect(Collectors.toSet());
+				UserValidationRequest user = new UserValidationRequest(isNewRecord, employeeAccess.getAccessMail(),
+						autoCreatePassword, new ArrayList<Long>(roles));
+				UserValidationRequest userValidationRequest = this.setupServiceClient.saveUserCredentials(user);
+				if(userValidationRequest != null) {
+					employeeAccess.setPlainPassword(autoCreatePassword);
+					employeeAccess.setPassword(passwordEncoder.encode(autoCreatePassword));
+					employeeAccessRepository.getPasswordById(employeeAccess.getEmployeeId());
+					employeeAccess.setPassword(passwordEncoder.encode(autoCreatePassword));
+					this.employeeAccessRepository.save(employeeAccess);
+					String body = "Hi,<br><br>This is the auto genrated password.<br> " + autoCreatePassword + " <br><b>Regards</b>,<br>Team Monstarbill<br>" ;
+					try {
+						CommonUtils.sendMail(mailId, null, "Password", body);	
+					} catch (Exception e) {
+						e.printStackTrace();
+						log.error("Error while sending the mail.");
+						throw new CustomException("Error while sending the mail.");
+					}	
+
+				}
 			}
 			log.info("user with roles is saved.");
 		} else {

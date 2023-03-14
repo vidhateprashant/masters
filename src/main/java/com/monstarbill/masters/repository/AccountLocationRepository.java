@@ -12,4 +12,6 @@ public interface AccountLocationRepository extends JpaRepository<AccountLocation
 
 	public List<AccountLocation> findAllByAccountIdAndIsDeleted(Long accountId, boolean isDeleted);
 
+	public List<AccountLocation> findAllByAccountIdAndIsDeletedOrderByIdAsc(Long accountId, boolean isDeleted);
+
 }
